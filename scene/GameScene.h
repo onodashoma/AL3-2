@@ -48,6 +48,9 @@ class GameScene {
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
+
 	/// <summary>
 	/// ゲームシーン用
 	
@@ -55,7 +58,7 @@ class GameScene {
 	int32_t translation_ ;
 	
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_[100];
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
