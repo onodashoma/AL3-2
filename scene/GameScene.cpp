@@ -6,7 +6,11 @@ using namespace DirectX;
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+
+	delete model_;
+
+}
 
 void GameScene::Initialize() {
 
@@ -14,9 +18,48 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+	model_ = Model::Create();
+
+	//X,Y,Z方向のスケーリングを設定
+	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
+
+	// X,Y,Z軸周りの回転角を設定
+	worldTransform_.rotation_ = {XM_PI/4.0f,XM_PI/4.0f,0.0f};
+
+	//X,Y,Z軸周りの平行移動を設定
+	worldTransform_.translation_ = {10.0f, 10.0f, 10.0f};
+
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+
+	//ビュープロジェクションの初期化
+	viewProjection_.Initialize();
+
+	
+
+	textureHandle_ = TextureManager::Load("player.png");
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+	char str1[100];
+	char str2[100];
+	char str3[100];
+	sprintf_s(
+	  str1, "Translation:(%f,%f,%f)", worldTransform_.translation_.x, worldTransform_.translation_.y,
+	  worldTransform_.translation_.z);
+	sprintf_s(
+	  str2, "rotation:(%f,%f,%f)", worldTransform_.rotation_.x, worldTransform_.rotation_.y,
+	  worldTransform_.rotation_.z);
+	sprintf_s(
+	  str3, "scale:(%f,%f,%f)", worldTransform_.scale_.x, worldTransform_.scale_.y,
+	  worldTransform_.scale_.z);
+
+	//デバッグテキストの表示
+	debugText_->Print(str1, 50, 50, 1.0f);
+	debugText_->Print(str2, 50, 70, 1.0f);
+	debugText_->Print(str3, 50, 90, 1.0f);
+}
 
 void GameScene::Draw() {
 
@@ -44,6 +87,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	//3Dモデル描画
+	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
