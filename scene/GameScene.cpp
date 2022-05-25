@@ -186,7 +186,7 @@ void GameScene::Draw() {
 	Sprite::PreDraw(commandList);
 
 	/// <summary>
-	/// ここに背景スプライトの描画処理を追加できる
+	/// ここに背景スプライトの描画処理を追加できる.
 	/// </summary>
 
 	// スプライト描画後処理
